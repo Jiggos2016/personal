@@ -1,0 +1,502 @@
+Design and build a production-grade personal website for Anand Kumar.
+
+This is NOT a traditional resume website and should NOT look like a portfolio template.
+
+The website should position Anand as a senior technology, data, product, and transformation leader who combines business strategy, technology, AI, data, and operational execution.
+
+PRIMARY OBJECTIVE
+
+Create a sophisticated executive personal brand website that communicates:
+
+• Senior technology and data leadership
+• Product thinking and systems thinking
+• Digital transformation
+• AI and intelligent systems
+• Enterprise technology
+• Process improvement
+• Project and program leadership
+• Building complex products from concept to execution
+• Strong ability to connect business problems, technology, data, and measurable outcomes
+
+The experience should feel credible to:
+• CTOs
+• CIOs
+• Product leaders
+• Technology executives
+• Founders
+• Enterprise decision makers
+• Recruiters looking for senior technology/product/data leadership
+
+DESIGN DIRECTION
+
+Use a premium editorial + modern technology aesthetic.
+
+Think:
+• Linear
+• Stripe
+• Vercel
+• Notion
+• McKinsey Digital
+• Apple product storytelling
+
+But do NOT copy any of these websites.
+
+The design should feel:
+• Minimal
+• Sophisticated
+• Intelligent
+• Executive
+• Calm
+• Highly intentional
+• Premium
+• Technology-forward
+
+Avoid:
+• Generic portfolio cards
+• Excessive gradients
+• Neon colors
+• Stock photography
+• Overuse of animations
+• "AI-generated portfolio" appearance
+• Huge meaningless text
+• Skill bars
+• Generic icons everywhere
+• Traditional résumé layouts
+
+COLOR SYSTEM
+
+Use a primarily light interface.
+
+Background:
+Warm white / very light gray.
+
+Text:
+Near-black / charcoal.
+
+Accent:
+Deep blue or sophisticated indigo.
+
+Use subtle borders, restrained shadows, and strong typography.
+
+Typography should feel editorial and premium.
+
+SITE STRUCTURE
+
+1. HERO
+
+Create a powerful opening statement.
+
+Name:
+Anand Kumar
+
+Primary positioning:
+
+"Technology, Data & Product Leader
+Building intelligent systems that turn complex problems into better decisions."
+
+Alternative supporting statement:
+
+"I work at the intersection of technology, data, product strategy, AI, and operational transformation."
+
+Keep the hero concise.
+
+Include two primary CTAs:
+
+[View My Work]
+[Let's Connect]
+
+Include a subtle scroll indicator.
+
+Do NOT put a giant résumé summary in the hero.
+
+Instead, immediately communicate what Anand builds and how he thinks.
+
+--------------------------------------------------
+
+2. ABOUT / EXECUTIVE INTRODUCTION
+
+Section heading:
+
+"Building at the intersection of technology, data and intelligence."
+
+Write a concise executive narrative.
+
+Position Anand as someone who has worked across enterprise technology, data leadership, process improvement, and complex transformation initiatives.
+
+Emphasize the ability to move between:
+
+Business problem
+→ Strategy
+→ Product
+→ Data
+→ Technology
+→ Execution
+→ Measurable outcome
+
+Use a visual systems diagram rather than a wall of text.
+
+--------------------------------------------------
+
+3. CURRENT FOCUS
+
+Create a visually distinctive section titled:
+
+"What I'm Building Now"
+
+Feature ResearchOS as the primary current product/project.
+
+ResearchOS should be presented as:
+
+"An AI-powered Research Operating System for scientific and drug-discovery teams."
+
+Explain the concept at a high level:
+
+ResearchOS connects scientific data, experimental workflows, literature, evidence, AI reasoning, decisions, and institutional learning into one continuous research system.
+
+Show the conceptual loop:
+
+DISCOVER
+→ PLAN
+→ EXECUTE
+→ REASON
+→ DECIDE
+→ LEARN
+
+This should look like a sophisticated product architecture visualization.
+
+Do not make this section look like a résumé entry.
+
+Make it feel like a founder/product-builder case study.
+
+CTA:
+
+[Explore ResearchOS]
+
+--------------------------------------------------
+
+4. SELECTED WORK
+
+Title:
+
+"Selected Work"
+
+Use large editorial project cards rather than standard portfolio cards.
+
+Each project should have:
+
+Project name
+Role
+Problem
+Approach
+Outcome
+Technology / domain
+[View Case Study]
+
+Prioritize depth over quantity.
+
+ResearchOS should be the featured case study.
+
+Other projects should be added later without redesigning the site.
+
+Design the system so additional projects can easily be added.
+
+--------------------------------------------------
+
+5. EXPERIENCE
+
+Title:
+
+"Experience"
+
+Create an elegant vertical timeline.
+
+Use the verified information available:
+
+Public Sector
+Data Leader
+March 2015 – November 2021
+
+Flower Foods Inc
+SAP Manager
+January 2010 – July 2014
+
+Do NOT invent employers, responsibilities, achievements, metrics, or technologies that are not provided.
+
+Instead, create expandable experience entries where additional detail can be added later.
+
+Each entry should support:
+
+Organization
+Role
+Dates
+Executive summary
+Key initiatives
+Impact
+Technology / domain
+
+--------------------------------------------------
+
+6. HOW I THINK
+
+Create a distinctive section that communicates Anand's operating philosophy.
+
+Possible themes:
+
+Systems Thinking
+Start with the problem, not the technology.
+
+Data as Infrastructure
+Reliable decisions require reliable information.
+
+Product Thinking
+Technology should solve meaningful user problems.
+
+AI as Intelligence Layer
+AI should augment reasoning and decision-making rather than simply automate tasks.
+
+Execution
+Strategy only matters when it becomes operational reality.
+
+Use five elegant interactive principles.
+
+--------------------------------------------------
+
+7. CAPABILITIES
+
+Do NOT create a traditional "Skills" section with progress bars.
+
+Instead create capability domains:
+
+01 — Technology Leadership
+02 — Data & Analytics
+03 — Product Strategy
+04 — AI & Intelligent Systems
+05 — Digital Transformation
+06 — Process Improvement
+07 — Program / Project Leadership
+08 — Enterprise Systems
+
+Each capability should open into a concise explanation.
+
+--------------------------------------------------
+
+8. RESEARCHOS CASE STUDY PREVIEW
+
+Create a full-width premium feature section.
+
+Headline:
+
+"From fragmented research workflows to an intelligent scientific operating system."
+
+Show the ResearchOS architecture visually.
+
+Include:
+
+• Scientific Search & Evidence
+• Research Intelligence
+• Experiments
+• ELN / LIMS / Instruments
+• Evidence System
+• AI Agents
+• Scientific Reasoning
+• Decisions
+• Institutional Learning
+
+The visual should communicate that ResearchOS is a connected operating system rather than another standalone AI chatbot.
+
+CTA:
+
+[View ResearchOS Case Study]
+
+--------------------------------------------------
+
+9. INSIGHTS
+
+Create a simple editorial section for future writing.
+
+Possible categories:
+
+AI
+Technology
+Data
+Product
+Digital Transformation
+Scientific Computing
+Leadership
+
+Display 3–6 articles.
+
+The CMS/content architecture should make adding articles later easy.
+
+--------------------------------------------------
+
+10. CONTACT
+
+End with a strong, minimal CTA.
+
+Headline:
+
+"Let's build something meaningful."
+
+Supporting copy:
+
+"Interested in technology, AI, data, product strategy, or building intelligent systems?"
+
+Buttons:
+
+[LinkedIn]
+[Email Me]
+
+Use the contact information from the provided profile where appropriate.
+
+--------------------------------------------------
+
+NAVIGATION
+
+Desktop navigation:
+
+Anand Kumar
+
+Work
+ResearchOS
+Experience
+Insights
+About
+
+Right side:
+
+Let's Connect
+
+Navigation should remain minimal and sticky.
+
+On mobile, use a clean hamburger navigation.
+
+--------------------------------------------------
+
+INTERACTION DESIGN
+
+Use subtle, high-quality motion.
+
+Examples:
+
+• Smooth section transitions
+• Text reveal on initial load
+• Cards gently entering viewport
+• Timeline progression
+• Hover states
+• Subtle architectural animations
+• Smooth scrolling
+
+Animation must communicate hierarchy, not distract from content.
+
+Respect prefers-reduced-motion.
+
+--------------------------------------------------
+
+RESPONSIVE DESIGN
+
+The website must be production quality across:
+
+• Desktop
+• Laptop
+• Tablet
+• Mobile
+
+Do not simply stack desktop components on mobile.
+
+Design mobile layouts intentionally.
+
+--------------------------------------------------
+
+TECHNICAL REQUIREMENTS
+
+Build this as a real production website.
+
+Requirements:
+
+• Semantic HTML
+• Accessible navigation
+• WCAG-conscious contrast
+• Keyboard navigation
+• Responsive typography
+• SEO metadata
+• Open Graph metadata
+• Fast loading
+• Optimized images
+• No unnecessary dependencies
+• Clean reusable components
+• Modular content architecture
+• Easy future CMS integration
+• Analytics-ready
+• Contact links should work
+• LinkedIn link should work
+• No placeholder lorem ipsum
+
+Create reusable components for:
+
+Hero
+SectionHeader
+ProjectCard
+CaseStudyCard
+ExperienceTimeline
+CapabilityCard
+InsightCard
+CTA
+Footer
+
+--------------------------------------------------
+
+IMPORTANT CONTENT RULE
+
+Do not invent professional history.
+
+Use only verified information from the provided profile for current experience.
+
+For sections where information is not available, create the structure but clearly use editable placeholder content that can later be replaced.
+
+Do not fabricate:
+• Job responsibilities
+• Revenue numbers
+• Team sizes
+• Certifications
+• Awards
+• Education
+• Client names
+• Technology stacks
+• Business outcomes
+
+--------------------------------------------------
+
+VISUAL HIERARCHY
+
+The site should feel like an executive technology profile, not a résumé.
+
+Use large typography selectively.
+
+Create generous whitespace.
+
+Use thin dividers and subtle grids.
+
+Use visual storytelling wherever possible.
+
+The visitor should understand within 10 seconds:
+
+WHO ANAND IS
+WHAT HE BUILDS
+HOW HE THINKS
+WHAT HE HAS DONE
+HOW TO CONTACT HIM
+
+--------------------------------------------------
+
+FINAL EXPERIENCE
+
+The finished site should feel like:
+
+"An experienced technology leader who is also capable of building sophisticated products."
+
+It should NOT feel like:
+
+"Someone uploaded their résumé and generated a website."
+
+Make every section intentional, editorial, and premium.
