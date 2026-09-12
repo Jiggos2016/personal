@@ -1,502 +1,1254 @@
-Design and build a production-grade personal website for Anand Kumar.
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+  <title>Anand Kumar — Technology, Data & Product Leader</title>
+
+  <meta
+    name="description"
+    content="Anand Kumar — Technology, data and product leader building intelligent systems and driving digital transformation."
+  />
+
+  <meta property="og:title" content="Anand Kumar — Technology, Data & Product Leader" />
+  <meta
+    property="og:description"
+    content="Technology, data, product strategy and intelligent systems."
+  />
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link
+    href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Manrope:wght@400;500;600;700;800&display=swap"
+    rel="stylesheet"
+  />
+
+  <style>
+    :root {
+      --bg: #f7f7f5;
+      --surface: #ffffff;
+      --text: #111111;
+      --muted: #6b6b6b;
+      --border: #e5e5e2;
+      --accent: #3157d5;
+      --accent-dark: #2444ae;
+      --soft: #eef2ff;
+      --max-width: 1180px;
+    }
+
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    html {
+      scroll-behavior: smooth;
+    }
+
+    body {
+      font-family: "Inter", sans-serif;
+      background: var(--bg);
+      color: var(--text);
+      line-height: 1.6;
+    }
+
+    a {
+      color: inherit;
+      text-decoration: none;
+    }
+
+    .container {
+      width: min(var(--max-width), calc(100% - 48px));
+      margin: 0 auto;
+    }
+
+    /* NAVIGATION */
+
+    nav {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      z-index: 1000;
+      background: rgba(247, 247, 245, 0.88);
+      backdrop-filter: blur(18px);
+      border-bottom: 1px solid rgba(229, 229, 226, 0.8);
+    }
+
+    .nav-inner {
+      height: 76px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+
+    .logo {
+      font-family: "Manrope", sans-serif;
+      font-weight: 800;
+      font-size: 19px;
+      letter-spacing: -0.04em;
+    }
+
+    .nav-links {
+      display: flex;
+      gap: 32px;
+      align-items: center;
+      font-size: 14px;
+      color: #444;
+    }
+
+    .nav-links a:hover {
+      color: var(--accent);
+    }
+
+    .nav-cta {
+      background: var(--text);
+      color: white !important;
+      padding: 10px 17px;
+      border-radius: 999px;
+    }
+
+    /* HERO */
+
+    .hero {
+      padding: 190px 0 120px;
+      min-height: 92vh;
+      display: flex;
+      align-items: center;
+    }
+
+    .eyebrow {
+      display: inline-flex;
+      align-items: center;
+      gap: 9px;
+      font-size: 13px;
+      font-weight: 600;
+      color: var(--accent);
+      margin-bottom: 25px;
+      text-transform: uppercase;
+      letter-spacing: 0.1em;
+    }
+
+    .eyebrow::before {
+      content: "";
+      width: 7px;
+      height: 7px;
+      border-radius: 50%;
+      background: var(--accent);
+    }
+
+    h1 {
+      font-family: "Manrope", sans-serif;
+      font-size: clamp(54px, 7vw, 94px);
+      line-height: 0.98;
+      letter-spacing: -0.07em;
+      max-width: 980px;
+      font-weight: 700;
+    }
+
+    .hero h1 span {
+      color: var(--muted);
+    }
+
+    .hero-description {
+      max-width: 650px;
+      font-size: 20px;
+      line-height: 1.6;
+      color: var(--muted);
+      margin-top: 32px;
+    }
+
+    .hero-actions {
+      display: flex;
+      gap: 12px;
+      margin-top: 38px;
+    }
+
+    .button {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      padding: 13px 21px;
+      border-radius: 999px;
+      font-size: 14px;
+      font-weight: 600;
+      transition: 0.2s ease;
+    }
+
+    .button-primary {
+      background: var(--text);
+      color: white;
+    }
+
+    .button-primary:hover {
+      background: #333;
+      transform: translateY(-2px);
+    }
+
+    .button-secondary {
+      border: 1px solid var(--border);
+      background: white;
+    }
+
+    .button-secondary:hover {
+      border-color: #aaa;
+      transform: translateY(-2px);
+    }
+
+    /* SECTIONS */
+
+    section {
+      padding: 120px 0;
+      border-top: 1px solid var(--border);
+    }
+
+    .section-header {
+      display: grid;
+      grid-template-columns: 0.8fr 1.5fr;
+      gap: 60px;
+      margin-bottom: 65px;
+    }
+
+    .section-number {
+      font-size: 13px;
+      color: var(--accent);
+      font-weight: 600;
+      letter-spacing: 0.08em;
+    }
+
+    h2 {
+      font-family: "Manrope", sans-serif;
+      font-size: clamp(38px, 5vw, 62px);
+      line-height: 1.05;
+      letter-spacing: -0.055em;
+    }
+
+    .section-intro {
+      max-width: 680px;
+      color: var(--muted);
+      font-size: 18px;
+      margin-top: 20px;
+    }
+
+    /* ABOUT */
+
+    .about-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 80px;
+    }
+
+    .about-large {
+      font-family: "Manrope", sans-serif;
+      font-size: 31px;
+      line-height: 1.25;
+      letter-spacing: -0.035em;
+    }
+
+    .about-copy {
+      color: var(--muted);
+      font-size: 16px;
+    }
+
+    .about-copy p + p {
+      margin-top: 20px;
+    }
+
+    /* SYSTEM DIAGRAM */
+
+    .system {
+      margin-top: 75px;
+      padding: 35px;
+      border: 1px solid var(--border);
+      background: white;
+      border-radius: 22px;
+    }
+
+    .system-title {
+      font-size: 13px;
+      text-transform: uppercase;
+      letter-spacing: 0.1em;
+      color: var(--muted);
+      margin-bottom: 28px;
+    }
+
+    .system-flow {
+      display: grid;
+      grid-template-columns: repeat(6, 1fr);
+      gap: 10px;
+    }
+
+    .system-item {
+      padding: 22px 15px;
+      border: 1px solid var(--border);
+      border-radius: 13px;
+      text-align: center;
+      font-size: 13px;
+      font-weight: 600;
+      background: var(--bg);
+    }
+
+    .system-item:not(:last-child)::after {
+      content: "→";
+      position: absolute;
+    }
+
+    /* RESEARCHOS */
+
+    .researchos {
+      background: #111;
+      color: white;
+      border-radius: 28px;
+      padding: 70px;
+      overflow: hidden;
+      position: relative;
+    }
+
+    .researchos::after {
+      content: "";
+      position: absolute;
+      width: 500px;
+      height: 500px;
+      border-radius: 50%;
+      border: 1px solid rgba(255,255,255,0.1);
+      right: -200px;
+      top: -200px;
+    }
+
+    .researchos-label {
+      color: #9eafff;
+      font-size: 12px;
+      text-transform: uppercase;
+      letter-spacing: 0.12em;
+      font-weight: 600;
+    }
+
+    .researchos h3 {
+      font-family: "Manrope", sans-serif;
+      font-size: clamp(38px, 5vw, 64px);
+      line-height: 1.02;
+      letter-spacing: -0.055em;
+      max-width: 800px;
+      margin-top: 22px;
+    }
+
+    .researchos p {
+      color: #aaa;
+      max-width: 650px;
+      font-size: 17px;
+      margin-top: 25px;
+    }
+
+    .research-loop {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+      margin-top: 45px;
+    }
+
+    .loop-item {
+      border: 1px solid #333;
+      padding: 11px 16px;
+      border-radius: 999px;
+      font-size: 13px;
+      color: #ddd;
+    }
+
+    /* WORK */
+
+    .work-grid {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 18px;
+    }
+
+    .work-card {
+      background: white;
+      border: 1px solid var(--border);
+      border-radius: 20px;
+      padding: 34px;
+      min-height: 340px;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      transition: 0.25s ease;
+    }
+
+    .work-card:hover {
+      transform: translateY(-5px);
+      border-color: #cfcfca;
+      box-shadow: 0 15px 45px rgba(0,0,0,0.05);
+    }
+
+    .work-category {
+      font-size: 12px;
+      text-transform: uppercase;
+      letter-spacing: 0.1em;
+      color: var(--accent);
+      font-weight: 600;
+    }
+
+    .work-card h3 {
+      font-family: "Manrope", sans-serif;
+      font-size: 30px;
+      letter-spacing: -0.04em;
+      margin-top: 12px;
+    }
+
+    .work-card p {
+      color: var(--muted);
+      margin-top: 12px;
+    }
+
+    .work-link {
+      margin-top: 30px;
+      font-size: 14px;
+      font-weight: 600;
+    }
+
+    /* EXPERIENCE */
+
+    .timeline {
+      max-width: 900px;
+      margin-left: auto;
+    }
+
+    .experience {
+      display: grid;
+      grid-template-columns: 180px 1fr;
+      gap: 50px;
+      padding: 42px 0;
+      border-top: 1px solid var(--border);
+    }
+
+    .experience:last-child {
+      border-bottom: 1px solid var(--border);
+    }
+
+    .experience-date {
+      color: var(--muted);
+      font-size: 13px;
+      line-height: 1.5;
+    }
+
+    .experience-company {
+      font-size: 13px;
+      color: var(--accent);
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      font-weight: 600;
+    }
+
+    .experience h3 {
+      font-family: "Manrope", sans-serif;
+      font-size: 30px;
+      letter-spacing: -0.04em;
+      margin-top: 7px;
+    }
+
+    .experience-description {
+      color: var(--muted);
+      margin-top: 12px;
+    }
+
+    /* CAPABILITIES */
+
+    .capabilities {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      border-top: 1px solid var(--border);
+    }
+
+    .capability {
+      padding: 30px 0;
+      border-bottom: 1px solid var(--border);
+      display: flex;
+      align-items: baseline;
+      gap: 25px;
+    }
+
+    .capability:nth-child(odd) {
+      margin-right: 35px;
+    }
+
+    .capability-number {
+      color: var(--accent);
+      font-size: 12px;
+      font-weight: 600;
+    }
+
+    .capability h3 {
+      font-family: "Manrope", sans-serif;
+      font-size: 21px;
+      letter-spacing: -0.025em;
+    }
+
+    /* INSIGHTS */
+
+    .insights {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 18px;
+    }
+
+    .insight {
+      background: white;
+      border: 1px solid var(--border);
+      padding: 30px;
+      border-radius: 18px;
+      min-height: 230px;
+    }
+
+    .insight-category {
+      font-size: 11px;
+      text-transform: uppercase;
+      letter-spacing: 0.1em;
+      color: var(--accent);
+    }
+
+    .insight h3 {
+      font-family: "Manrope", sans-serif;
+      font-size: 23px;
+      line-height: 1.2;
+      margin-top: 25px;
+    }
+
+    /* CONTACT */
+
+    .contact {
+      padding: 150px 0;
+      text-align: center;
+    }
+
+    .contact h2 {
+      max-width: 850px;
+      margin: 0 auto;
+    }
+
+    .contact p {
+      color: var(--muted);
+      max-width: 520px;
+      margin: 25px auto 0;
+      font-size: 17px;
+    }
+
+    .contact-actions {
+      display: flex;
+      justify-content: center;
+      gap: 12px;
+      margin-top: 35px;
+    }
+
+    /* FOOTER */
+
+    footer {
+      border-top: 1px solid var(--border);
+      padding: 30px 0;
+    }
+
+    .footer-inner {
+      display: flex;
+      justify-content: space-between;
+      color: var(--muted);
+      font-size: 13px;
+    }
+
+    /* MOBILE */
+
+    @media (max-width: 800px) {
+
+      .container {
+        width: min(100% - 32px, var(--max-width));
+      }
+
+      .nav-links {
+        display: none;
+      }
+
+      .hero {
+        padding: 150px 0 90px;
+      }
+
+      h1 {
+        font-size: 55px;
+      }
+
+      .hero-description {
+        font-size: 17px;
+      }
+
+      section {
+        padding: 85px 0;
+      }
+
+      .section-header,
+      .about-grid {
+        grid-template-columns: 1fr;
+        gap: 25px;
+      }
+
+      .system-flow {
+        grid-template-columns: repeat(2, 1fr);
+      }
+
+      .researchos {
+        padding: 40px 25px;
+      }
+
+      .work-grid,
+      .capabilities,
+      .insights {
+        grid-template-columns: 1fr;
+      }
+
+      .capability:nth-child(odd) {
+        margin-right: 0;
+      }
+
+      .experience {
+        grid-template-columns: 1fr;
+        gap: 10px;
+      }
+
+      .footer-inner {
+        flex-direction: column;
+        gap: 10px;
+      }
+
+      .hero-actions,
+      .contact-actions {
+        flex-wrap: wrap;
+      }
+    }
+  </style>
+</head>
+
+<body>
+
+  <!-- NAVIGATION -->
+
+  <nav>
+    <div class="container nav-inner">
+
+      <a href="#" class="logo">
+        Anand Kumar
+      </a>
+
+      <div class="nav-links">
+        <a href="#about">About</a>
+        <a href="#work">Work</a>
+        <a href="#researchos">ResearchOS</a>
+        <a href="#experience">Experience</a>
+        <a href="#insights">Insights</a>
+        <a href="#contact" class="nav-cta">Let's Connect</a>
+      </div>
+
+    </div>
+  </nav>
+
+
+  <!-- HERO -->
+
+  <main>
+
+    <section class="hero">
+      <div class="container">
+
+        <div class="eyebrow">
+          Technology · Data · Product
+        </div>
+
+        <h1>
+          Building intelligent systems
+          <span>for complex problems.</span>
+        </h1>
+
+        <p class="hero-description">
+          I work at the intersection of technology, data, product strategy,
+          AI, and operational transformation — turning complex problems into
+          systems that help people make better decisions.
+        </p>
+
+        <div class="hero-actions">
+
+          <a href="#work" class="button button-primary">
+            View My Work
+          </a>
+
+          <a href="#contact" class="button button-secondary">
+            Let's Connect
+          </a>
+
+        </div>
+
+      </div>
+    </section>
+
+
+    <!-- ABOUT -->
+
+    <section id="about">
+
+      <div class="container">
+
+        <div class="section-header">
+
+          <div class="section-number">
+            01 — ABOUT
+          </div>
+
+          <div>
+            <h2>
+              Technology should make complexity understandable.
+            </h2>
+
+            <p class="section-intro">
+              My work sits between business problems, technology,
+              data, product thinking, and execution.
+            </p>
+          </div>
+
+        </div>
+
+
+        <div class="about-grid">
+
+          <div class="about-large">
+            I approach technology as a system — not as a collection
+            of disconnected tools.
+          </div>
+
+          <div class="about-copy">
+
+            <p>
+              Over my career, I have worked across data leadership,
+              enterprise systems, process improvement, and project
+              management.
+            </p>
+
+            <p>
+              I enjoy taking ambiguous problems, creating structure
+              around them, and turning that structure into practical
+              products, workflows, and operating systems.
+            </p>
+
+          </div>
+
+        </div>
+
+
+        <div class="system">
+
+          <div class="system-title">
+            How I approach complex problems
+          </div>
+
+          <div class="system-flow">
+
+            <div class="system-item">Problem</div>
+            <div class="system-item">Strategy</div>
+            <div class="system-item">Product</div>
+            <div class="system-item">Data</div>
+            <div class="system-item">Technology</div>
+            <div class="system-item">Outcome</div>
+
+          </div>
+
+        </div>
+
+      </div>
+
+    </section>
+
+
+    <!-- RESEARCHOS -->
+
+    <section id="researchos">
+
+      <div class="container">
+
+        <div class="researchos">
+
+          <div class="researchos-label">
+            Current Product
+          </div>
+
+          <h3>
+            ResearchOS — an intelligent operating system for scientific research.
+          </h3>
+
+          <p>
+            ResearchOS connects scientific data, research workflows,
+            literature, evidence, experiments, AI reasoning, decisions,
+            and institutional learning into one continuous system.
+          </p>
+
+          <div class="research-loop">
+
+            <div class="loop-item">Discover</div>
+            <div class="loop-item">Plan</div>
+            <div class="loop-item">Execute</div>
+            <div class="loop-item">Reason</div>
+            <div class="loop-item">Decide</div>
+            <div class="loop-item">Learn</div>
+
+          </div>
+
+          <br>
+
+          <a
+            href="#"
+            class="button button-secondary"
+            style="background:white;"
+          >
+            Explore ResearchOS →
+          </a>
+
+        </div>
+
+      </div>
+
+    </section>
+
+
+    <!-- WORK -->
+
+    <section id="work">
+
+      <div class="container">
+
+        <div class="section-header">
+
+          <div class="section-number">
+            02 — SELECTED WORK
+          </div>
+
+          <div>
+
+            <h2>
+              Building systems, not just screens.
+            </h2>
+
+            <p class="section-intro">
+              Selected work across technology, data, enterprise
+              systems, product thinking, and intelligent systems.
+            </p>
+
+          </div>
+
+        </div>
+
+
+        <div class="work-grid">
+
+          <article class="work-card">
+
+            <div>
+
+              <div class="work-category">
+                Product · AI · Scientific Research
+              </div>
+
+              <h3>
+                ResearchOS
+              </h3>
+
+              <p>
+                An AI-powered research operating system designed
+                to connect scientific knowledge, experimental truth,
+                evidence, reasoning, and institutional learning.
+              </p>
+
+            </div>
+
+            <div class="work-link">
+              View Case Study →
+            </div>
+
+          </article>
+
+
+          <article class="work-card">
+
+            <div>
+
+              <div class="work-category">
+                Enterprise Technology
+              </div>
+
+              <h3>
+                Enterprise Systems
+              </h3>
+
+              <p>
+                Experience working with enterprise technology and
+                business systems, including SAP and operational
+                transformation.
+              </p>
+
+            </div>
+
+            <div class="work-link">
+              View Experience →
+            </div>
+
+          </article>
+
+
+          <article class="work-card">
+
+            <div>
+
+              <div class="work-category">
+                Data Leadership
+              </div>
+
+              <h3>
+                Data & Transformation
+              </h3>
+
+              <p>
+                Data leadership focused on improving how organizations
+                structure, understand, and use information.
+              </p>
+
+            </div>
+
+            <div class="work-link">
+              View Experience →
+            </div>
+
+          </article>
+
+
+          <article class="work-card">
+
+            <div>
+
+              <div class="work-category">
+                Process · Program Management
+              </div>
+
+              <h3>
+                Process Improvement
+              </h3>
+
+              <p>
+                Applying structured problem solving and project
+                leadership to improve complex organizational workflows.
+              </p>
+
+            </div>
 
-This is NOT a traditional resume website and should NOT look like a portfolio template.
+            <div class="work-link">
+              More coming soon →
+            </div>
 
-The website should position Anand as a senior technology, data, product, and transformation leader who combines business strategy, technology, AI, data, and operational execution.
+          </article>
 
-PRIMARY OBJECTIVE
+        </div>
 
-Create a sophisticated executive personal brand website that communicates:
+      </div>
 
-• Senior technology and data leadership
-• Product thinking and systems thinking
-• Digital transformation
-• AI and intelligent systems
-• Enterprise technology
-• Process improvement
-• Project and program leadership
-• Building complex products from concept to execution
-• Strong ability to connect business problems, technology, data, and measurable outcomes
+    </section>
 
-The experience should feel credible to:
-• CTOs
-• CIOs
-• Product leaders
-• Technology executives
-• Founders
-• Enterprise decision makers
-• Recruiters looking for senior technology/product/data leadership
 
-DESIGN DIRECTION
+    <!-- EXPERIENCE -->
 
-Use a premium editorial + modern technology aesthetic.
+    <section id="experience">
 
-Think:
-• Linear
-• Stripe
-• Vercel
-• Notion
-• McKinsey Digital
-• Apple product storytelling
+      <div class="container">
 
-But do NOT copy any of these websites.
+        <div class="section-header">
 
-The design should feel:
-• Minimal
-• Sophisticated
-• Intelligent
-• Executive
-• Calm
-• Highly intentional
-• Premium
-• Technology-forward
+          <div class="section-number">
+            03 — EXPERIENCE
+          </div>
 
-Avoid:
-• Generic portfolio cards
-• Excessive gradients
-• Neon colors
-• Stock photography
-• Overuse of animations
-• "AI-generated portfolio" appearance
-• Huge meaningless text
-• Skill bars
-• Generic icons everywhere
-• Traditional résumé layouts
+          <div>
 
-COLOR SYSTEM
+            <h2>
+              Experience across data and enterprise technology.
+            </h2>
 
-Use a primarily light interface.
+          </div>
 
-Background:
-Warm white / very light gray.
+        </div>
 
-Text:
-Near-black / charcoal.
 
-Accent:
-Deep blue or sophisticated indigo.
+        <div class="timeline">
 
-Use subtle borders, restrained shadows, and strong typography.
 
-Typography should feel editorial and premium.
+          <div class="experience">
 
-SITE STRUCTURE
+            <div class="experience-date">
+              March 2015<br>
+              — November 2021
+            </div>
 
-1. HERO
+            <div>
 
-Create a powerful opening statement.
+              <div class="experience-company">
+                Public Sector
+              </div>
 
-Name:
-Anand Kumar
+              <h3>
+                Data Leader
+              </h3>
 
-Primary positioning:
+              <p class="experience-description">
+                Data leadership experience focused on organizational
+                information, transformation, and improving how data
+                supports decision-making.
+              </p>
 
-"Technology, Data & Product Leader
-Building intelligent systems that turn complex problems into better decisions."
+            </div>
 
-Alternative supporting statement:
+          </div>
 
-"I work at the intersection of technology, data, product strategy, AI, and operational transformation."
 
-Keep the hero concise.
+          <div class="experience">
 
-Include two primary CTAs:
+            <div class="experience-date">
+              January 2010<br>
+              — July 2014
+            </div>
 
-[View My Work]
-[Let's Connect]
+            <div>
 
-Include a subtle scroll indicator.
+              <div class="experience-company">
+                Flower Foods Inc
+              </div>
 
-Do NOT put a giant résumé summary in the hero.
+              <h3>
+                SAP Manager
+              </h3>
 
-Instead, immediately communicate what Anand builds and how he thinks.
+              <p class="experience-description">
+                Enterprise systems leadership involving SAP and
+                business technology operations.
+              </p>
 
---------------------------------------------------
+            </div>
 
-2. ABOUT / EXECUTIVE INTRODUCTION
+          </div>
 
-Section heading:
 
-"Building at the intersection of technology, data and intelligence."
+        </div>
 
-Write a concise executive narrative.
+      </div>
 
-Position Anand as someone who has worked across enterprise technology, data leadership, process improvement, and complex transformation initiatives.
+    </section>
 
-Emphasize the ability to move between:
 
-Business problem
-→ Strategy
-→ Product
-→ Data
-→ Technology
-→ Execution
-→ Measurable outcome
+    <!-- CAPABILITIES -->
 
-Use a visual systems diagram rather than a wall of text.
+    <section>
 
---------------------------------------------------
+      <div class="container">
 
-3. CURRENT FOCUS
+        <div class="section-header">
 
-Create a visually distinctive section titled:
+          <div class="section-number">
+            04 — CAPABILITIES
+          </div>
 
-"What I'm Building Now"
+          <div>
 
-Feature ResearchOS as the primary current product/project.
+            <h2>
+              Where technology meets execution.
+            </h2>
 
-ResearchOS should be presented as:
+          </div>
 
-"An AI-powered Research Operating System for scientific and drug-discovery teams."
+        </div>
 
-Explain the concept at a high level:
 
-ResearchOS connects scientific data, experimental workflows, literature, evidence, AI reasoning, decisions, and institutional learning into one continuous research system.
+        <div class="capabilities">
 
-Show the conceptual loop:
+          <div class="capability">
+            <span class="capability-number">01</span>
+            <h3>Technology Leadership</h3>
+          </div>
 
-DISCOVER
-→ PLAN
-→ EXECUTE
-→ REASON
-→ DECIDE
-→ LEARN
+          <div class="capability">
+            <span class="capability-number">02</span>
+            <h3>Data & Analytics</h3>
+          </div>
 
-This should look like a sophisticated product architecture visualization.
+          <div class="capability">
+            <span class="capability-number">03</span>
+            <h3>Product Strategy</h3>
+          </div>
 
-Do not make this section look like a résumé entry.
+          <div class="capability">
+            <span class="capability-number">04</span>
+            <h3>AI & Intelligent Systems</h3>
+          </div>
 
-Make it feel like a founder/product-builder case study.
+          <div class="capability">
+            <span class="capability-number">05</span>
+            <h3>Digital Transformation</h3>
+          </div>
 
-CTA:
+          <div class="capability">
+            <span class="capability-number">06</span>
+            <h3>Process Improvement</h3>
+          </div>
 
-[Explore ResearchOS]
+          <div class="capability">
+            <span class="capability-number">07</span>
+            <h3>Project Management</h3>
+          </div>
 
---------------------------------------------------
+          <div class="capability">
+            <span class="capability-number">08</span>
+            <h3>Enterprise Systems</h3>
+          </div>
 
-4. SELECTED WORK
+        </div>
 
-Title:
+      </div>
 
-"Selected Work"
+    </section>
 
-Use large editorial project cards rather than standard portfolio cards.
 
-Each project should have:
+    <!-- INSIGHTS -->
 
-Project name
-Role
-Problem
-Approach
-Outcome
-Technology / domain
-[View Case Study]
+    <section id="insights">
 
-Prioritize depth over quantity.
+      <div class="container">
 
-ResearchOS should be the featured case study.
+        <div class="section-header">
 
-Other projects should be added later without redesigning the site.
+          <div class="section-number">
+            05 — INSIGHTS
+          </div>
 
-Design the system so additional projects can easily be added.
+          <div>
 
---------------------------------------------------
+            <h2>
+              Thinking about technology, AI and systems.
+            </h2>
 
-5. EXPERIENCE
+            <p class="section-intro">
+              An editorial space for ideas, lessons, frameworks,
+              and observations from building and leading technology.
+            </p>
 
-Title:
+          </div>
 
-"Experience"
+        </div>
 
-Create an elegant vertical timeline.
 
-Use the verified information available:
+        <div class="insights">
 
-Public Sector
-Data Leader
-March 2015 – November 2021
+          <article class="insight">
 
-Flower Foods Inc
-SAP Manager
-January 2010 – July 2014
+            <div class="insight-category">
+              AI
+            </div>
 
-Do NOT invent employers, responsibilities, achievements, metrics, or technologies that are not provided.
+            <h3>
+              Building AI systems that people can actually trust.
+            </h3>
 
-Instead, create expandable experience entries where additional detail can be added later.
+          </article>
 
-Each entry should support:
 
-Organization
-Role
-Dates
-Executive summary
-Key initiatives
-Impact
-Technology / domain
+          <article class="insight">
 
---------------------------------------------------
+            <div class="insight-category">
+              Product
+            </div>
 
-6. HOW I THINK
+            <h3>
+              From problem definition to production-grade product.
+            </h3>
 
-Create a distinctive section that communicates Anand's operating philosophy.
+          </article>
 
-Possible themes:
 
-Systems Thinking
-Start with the problem, not the technology.
+          <article class="insight">
 
-Data as Infrastructure
-Reliable decisions require reliable information.
+            <div class="insight-category">
+              Data
+            </div>
 
-Product Thinking
-Technology should solve meaningful user problems.
+            <h3>
+              Why data architecture is ultimately a decision architecture.
+            </h3>
 
-AI as Intelligence Layer
-AI should augment reasoning and decision-making rather than simply automate tasks.
+          </article>
 
-Execution
-Strategy only matters when it becomes operational reality.
+        </div>
 
-Use five elegant interactive principles.
+      </div>
 
---------------------------------------------------
+    </section>
 
-7. CAPABILITIES
 
-Do NOT create a traditional "Skills" section with progress bars.
+    <!-- CONTACT -->
 
-Instead create capability domains:
+    <section id="contact" class="contact">
 
-01 — Technology Leadership
-02 — Data & Analytics
-03 — Product Strategy
-04 — AI & Intelligent Systems
-05 — Digital Transformation
-06 — Process Improvement
-07 — Program / Project Leadership
-08 — Enterprise Systems
+      <div class="container">
 
-Each capability should open into a concise explanation.
+        <h2>
+          Let's build something meaningful.
+        </h2>
 
---------------------------------------------------
+        <p>
+          Interested in technology, AI, data, product strategy,
+          or building intelligent systems?
+        </p>
 
-8. RESEARCHOS CASE STUDY PREVIEW
+        <div class="contact-actions">
 
-Create a full-width premium feature section.
+          <a
+            href="mailto:anand.kothandam@gmail.com"
+            class="button button-primary"
+          >
+            Email Me
+          </a>
 
-Headline:
+          <a
+            href="https://www.linkedin.com/in/anand-kumar-330ba7b4/"
+            target="_blank"
+            rel="noopener noreferrer"
+            class="button button-secondary"
+          >
+            LinkedIn
+          </a>
 
-"From fragmented research workflows to an intelligent scientific operating system."
+        </div>
 
-Show the ResearchOS architecture visually.
+      </div>
 
-Include:
+    </section>
 
-• Scientific Search & Evidence
-• Research Intelligence
-• Experiments
-• ELN / LIMS / Instruments
-• Evidence System
-• AI Agents
-• Scientific Reasoning
-• Decisions
-• Institutional Learning
+  </main>
 
-The visual should communicate that ResearchOS is a connected operating system rather than another standalone AI chatbot.
 
-CTA:
+  <!-- FOOTER -->
 
-[View ResearchOS Case Study]
+  <footer>
 
---------------------------------------------------
+    <div class="container footer-inner">
 
-9. INSIGHTS
+      <div>
+        © 2026 Anand Kumar
+      </div>
 
-Create a simple editorial section for future writing.
+      <div>
+        Technology · Data · Product · AI
+      </div>
 
-Possible categories:
+    </div>
 
-AI
-Technology
-Data
-Product
-Digital Transformation
-Scientific Computing
-Leadership
+  </footer>
 
-Display 3–6 articles.
-
-The CMS/content architecture should make adding articles later easy.
-
---------------------------------------------------
-
-10. CONTACT
-
-End with a strong, minimal CTA.
-
-Headline:
-
-"Let's build something meaningful."
-
-Supporting copy:
-
-"Interested in technology, AI, data, product strategy, or building intelligent systems?"
-
-Buttons:
-
-[LinkedIn]
-[Email Me]
-
-Use the contact information from the provided profile where appropriate.
-
---------------------------------------------------
-
-NAVIGATION
-
-Desktop navigation:
-
-Anand Kumar
-
-Work
-ResearchOS
-Experience
-Insights
-About
-
-Right side:
-
-Let's Connect
-
-Navigation should remain minimal and sticky.
-
-On mobile, use a clean hamburger navigation.
-
---------------------------------------------------
-
-INTERACTION DESIGN
-
-Use subtle, high-quality motion.
-
-Examples:
-
-• Smooth section transitions
-• Text reveal on initial load
-• Cards gently entering viewport
-• Timeline progression
-• Hover states
-• Subtle architectural animations
-• Smooth scrolling
-
-Animation must communicate hierarchy, not distract from content.
-
-Respect prefers-reduced-motion.
-
---------------------------------------------------
-
-RESPONSIVE DESIGN
-
-The website must be production quality across:
-
-• Desktop
-• Laptop
-• Tablet
-• Mobile
-
-Do not simply stack desktop components on mobile.
-
-Design mobile layouts intentionally.
-
---------------------------------------------------
-
-TECHNICAL REQUIREMENTS
-
-Build this as a real production website.
-
-Requirements:
-
-• Semantic HTML
-• Accessible navigation
-• WCAG-conscious contrast
-• Keyboard navigation
-• Responsive typography
-• SEO metadata
-• Open Graph metadata
-• Fast loading
-• Optimized images
-• No unnecessary dependencies
-• Clean reusable components
-• Modular content architecture
-• Easy future CMS integration
-• Analytics-ready
-• Contact links should work
-• LinkedIn link should work
-• No placeholder lorem ipsum
-
-Create reusable components for:
-
-Hero
-SectionHeader
-ProjectCard
-CaseStudyCard
-ExperienceTimeline
-CapabilityCard
-InsightCard
-CTA
-Footer
-
---------------------------------------------------
-
-IMPORTANT CONTENT RULE
-
-Do not invent professional history.
-
-Use only verified information from the provided profile for current experience.
-
-For sections where information is not available, create the structure but clearly use editable placeholder content that can later be replaced.
-
-Do not fabricate:
-• Job responsibilities
-• Revenue numbers
-• Team sizes
-• Certifications
-• Awards
-• Education
-• Client names
-• Technology stacks
-• Business outcomes
-
---------------------------------------------------
-
-VISUAL HIERARCHY
-
-The site should feel like an executive technology profile, not a résumé.
-
-Use large typography selectively.
-
-Create generous whitespace.
-
-Use thin dividers and subtle grids.
-
-Use visual storytelling wherever possible.
-
-The visitor should understand within 10 seconds:
-
-WHO ANAND IS
-WHAT HE BUILDS
-HOW HE THINKS
-WHAT HE HAS DONE
-HOW TO CONTACT HIM
-
---------------------------------------------------
-
-FINAL EXPERIENCE
-
-The finished site should feel like:
-
-"An experienced technology leader who is also capable of building sophisticated products."
-
-It should NOT feel like:
-
-"Someone uploaded their résumé and generated a website."
-
-Make every section intentional, editorial, and premium.
+</body>
+</html>
