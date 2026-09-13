@@ -1,0 +1,1284 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>RAG Simulator — Learn Retrieval-Augmented Generation</title>
+  <style>
+    :root{
+      --bg:#07111f;
+      --panel:#0d1a2b;
+      --panel-2:#111f33;
+      --panel-3:#162842;
+      --text:#eaf2ff;
+      --muted:#8ea2bd;
+      --line:#243753;
+      --accent:#7c5cff;
+      --accent-2:#2dd4bf;
+      --accent-3:#60a5fa;
+      --warn:#f59e0b;
+      --danger:#ef4444;
+      --success:#22c55e;
+      --shadow:0 18px 55px rgba(0,0,0,.30);
+      --radius:18px;
+    }
+
+    *{box-sizing:border-box}
+    html{scroll-behavior:smooth}
+    body{
+      margin:0;
+      min-height:100vh;
+      font-family:Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+      color:var(--text);
+      background:
+        radial-gradient(circle at top left, rgba(124,92,255,.18), transparent 30%),
+        radial-gradient(circle at top right, rgba(45,212,191,.10), transparent 28%),
+        linear-gradient(180deg,#07111f 0%,#08111e 100%);
+    }
+
+    button,input,textarea,select{font:inherit}
+    button{cursor:pointer}
+
+    .app{
+      display:grid;
+      grid-template-columns:300px minmax(0,1fr);
+      min-height:100vh;
+    }
+
+    .sidebar{
+      position:sticky;
+      top:0;
+      height:100vh;
+      padding:22px;
+      border-right:1px solid var(--line);
+      background:rgba(7,17,31,.86);
+      backdrop-filter:blur(20px);
+      overflow:auto;
+    }
+
+    .brand{
+      display:flex;
+      align-items:center;
+      gap:12px;
+      margin-bottom:26px;
+    }
+
+    .logo{
+      width:42px;
+      height:42px;
+      display:grid;
+      place-items:center;
+      border-radius:14px;
+      background:linear-gradient(135deg,var(--accent),var(--accent-3));
+      box-shadow:0 10px 30px rgba(124,92,255,.35);
+      font-weight:800;
+    }
+
+    .brand h1{
+      font-size:16px;
+      margin:0;
+      letter-spacing:.2px;
+    }
+
+    .brand p{
+      margin:3px 0 0;
+      color:var(--muted);
+      font-size:12px;
+    }
+
+    .step-list{
+      display:flex;
+      flex-direction:column;
+      gap:8px;
+      margin-bottom:24px;
+    }
+
+    .step-link{
+      border:1px solid transparent;
+      background:transparent;
+      color:var(--muted);
+      border-radius:12px;
+      padding:10px 12px;
+      text-align:left;
+      display:flex;
+      align-items:center;
+      gap:10px;
+      transition:.2s ease;
+    }
+
+    .step-link:hover,
+    .step-link.active{
+      color:var(--text);
+      background:var(--panel-2);
+      border-color:var(--line);
+    }
+
+    .step-num{
+      width:26px;height:26px;
+      display:grid;place-items:center;
+      border-radius:8px;
+      background:var(--panel-3);
+      color:#c8d6ea;
+      font-size:12px;
+      flex:0 0 auto;
+    }
+
+    .sidebar-note{
+      padding:14px;
+      border-radius:14px;
+      border:1px solid var(--line);
+      background:linear-gradient(180deg,rgba(124,92,255,.10),rgba(17,31,51,.8));
+      color:var(--muted);
+      font-size:12px;
+      line-height:1.5;
+    }
+
+    main{
+      padding:24px 28px 64px;
+      max-width:1500px;
+      width:100%;
+      margin:0 auto;
+    }
+
+    .hero{
+      border:1px solid var(--line);
+      background:linear-gradient(135deg,rgba(124,92,255,.14),rgba(17,31,51,.82));
+      box-shadow:var(--shadow);
+      border-radius:26px;
+      padding:28px;
+      margin-bottom:22px;
+      overflow:hidden;
+      position:relative;
+    }
+
+    .hero:after{
+      content:"";
+      position:absolute;
+      width:260px;height:260px;
+      border-radius:50%;
+      right:-110px;top:-100px;
+      background:radial-gradient(circle,rgba(45,212,191,.18),transparent 68%);
+    }
+
+    .eyebrow{
+      display:inline-flex;
+      gap:8px;
+      align-items:center;
+      padding:7px 10px;
+      border-radius:999px;
+      border:1px solid rgba(124,92,255,.35);
+      background:rgba(124,92,255,.10);
+      color:#c9c0ff;
+      font-size:12px;
+      margin-bottom:12px;
+    }
+
+    h2{
+      margin:0;
+      font-size:clamp(28px,4vw,48px);
+      line-height:1.05;
+      letter-spacing:-1.4px;
+      max-width:900px;
+    }
+
+    .hero p{
+      color:var(--muted);
+      max-width:870px;
+      line-height:1.7;
+      margin:14px 0 0;
+    }
+
+    .hero-actions{
+      display:flex;
+      flex-wrap:wrap;
+      gap:10px;
+      margin-top:20px;
+    }
+
+    .btn{
+      border:1px solid var(--line);
+      color:var(--text);
+      background:var(--panel-2);
+      padding:10px 14px;
+      border-radius:12px;
+      transition:.2s ease;
+    }
+
+    .btn:hover{transform:translateY(-1px);border-color:#3b5276}
+    .btn.primary{
+      background:linear-gradient(135deg,var(--accent),#5f7cff);
+      border-color:transparent;
+      box-shadow:0 8px 24px rgba(124,92,255,.28);
+    }
+    .btn.ghost{background:transparent}
+
+    .pipeline{
+      display:grid;
+      grid-template-columns:repeat(5,minmax(0,1fr));
+      gap:10px;
+      margin:22px 0;
+    }
+
+    .pipe{
+      position:relative;
+      padding:14px;
+      border:1px solid var(--line);
+      border-radius:14px;
+      background:rgba(13,26,43,.82);
+      min-height:92px;
+    }
+
+    .pipe strong{display:block;font-size:13px}
+    .pipe span{display:block;font-size:12px;color:var(--muted);margin-top:5px;line-height:1.35}
+
+    .grid{
+      display:grid;
+      grid-template-columns:repeat(12,minmax(0,1fr));
+      gap:16px;
+    }
+
+    .card{
+      grid-column:span 6;
+      border:1px solid var(--line);
+      border-radius:var(--radius);
+      background:rgba(13,26,43,.88);
+      box-shadow:0 14px 38px rgba(0,0,0,.18);
+      padding:20px;
+    }
+
+    .card.full{grid-column:1/-1}
+    .card.third{grid-column:span 4}
+
+    .card-header{
+      display:flex;
+      justify-content:space-between;
+      gap:12px;
+      align-items:flex-start;
+      margin-bottom:14px;
+    }
+
+    .card h3{
+      margin:0;
+      font-size:18px;
+    }
+
+    .sub{
+      color:var(--muted);
+      font-size:13px;
+      margin-top:5px;
+      line-height:1.5;
+    }
+
+    .badge{
+      border:1px solid var(--line);
+      border-radius:999px;
+      padding:6px 9px;
+      color:var(--muted);
+      font-size:11px;
+      white-space:nowrap;
+    }
+
+    textarea,
+    input,
+    select{
+      width:100%;
+      border:1px solid var(--line);
+      background:#091625;
+      color:var(--text);
+      border-radius:12px;
+      outline:none;
+      padding:11px 12px;
+    }
+
+    textarea:focus,
+    input:focus,
+    select:focus{
+      border-color:#6076ff;
+      box-shadow:0 0 0 3px rgba(96,118,255,.12);
+    }
+
+    textarea{
+      min-height:190px;
+      resize:vertical;
+      line-height:1.55;
+    }
+
+    .control-row{
+      display:grid;
+      grid-template-columns:repeat(3,1fr);
+      gap:10px;
+      margin-top:12px;
+    }
+
+    label{
+      display:block;
+      color:#b6c5d9;
+      font-size:12px;
+      margin-bottom:7px;
+    }
+
+    .small-note{
+      color:var(--muted);
+      font-size:12px;
+      line-height:1.5;
+      margin-top:10px;
+    }
+
+    .chips{
+      display:flex;
+      flex-wrap:wrap;
+      gap:8px;
+      margin-top:12px;
+    }
+
+    .chip{
+      padding:7px 9px;
+      border-radius:10px;
+      border:1px solid var(--line);
+      color:#cbd8ea;
+      font-size:12px;
+      background:var(--panel-2);
+    }
+
+    .chunk-list,
+    .retrieval-list{
+      display:flex;
+      flex-direction:column;
+      gap:10px;
+      max-height:470px;
+      overflow:auto;
+      padding-right:4px;
+    }
+
+    .chunk,
+    .result{
+      border:1px solid var(--line);
+      background:#0a1727;
+      border-radius:14px;
+      padding:13px;
+    }
+
+    .chunk-top,
+    .result-top{
+      display:flex;
+      justify-content:space-between;
+      gap:10px;
+      align-items:center;
+      margin-bottom:8px;
+    }
+
+    .id{
+      font-size:11px;
+      color:#a9b9cf;
+    }
+
+    .score{
+      font-size:11px;
+      color:#bde8e0;
+      background:rgba(45,212,191,.10);
+      border:1px solid rgba(45,212,191,.25);
+      padding:4px 7px;
+      border-radius:999px;
+    }
+
+    .chunk p,.result p{
+      margin:0;
+      color:#c1cee0;
+      font-size:12px;
+      line-height:1.55;
+    }
+
+    .embedding{
+      display:grid;
+      grid-template-columns:repeat(8,1fr);
+      gap:6px;
+      margin-top:10px;
+    }
+
+    .dim{
+      height:30px;
+      border-radius:7px;
+      display:grid;
+      place-items:center;
+      color:#fff;
+      font-size:10px;
+      background:linear-gradient(180deg,#4a5f81,#24344f);
+    }
+
+    .vector-map{
+      width:100%;
+      height:280px;
+      border-radius:16px;
+      background:
+        linear-gradient(rgba(255,255,255,.025) 1px,transparent 1px),
+        linear-gradient(90deg,rgba(255,255,255,.025) 1px,transparent 1px),
+        #091625;
+      background-size:28px 28px;
+      border:1px solid var(--line);
+      position:relative;
+      overflow:hidden;
+    }
+
+    .dot{
+      position:absolute;
+      width:14px;height:14px;
+      border-radius:50%;
+      transform:translate(-50%,-50%);
+      box-shadow:0 0 0 5px rgba(255,255,255,.03);
+    }
+
+    .dot.chunk-dot{background:var(--accent-3)}
+    .dot.query-dot{background:var(--accent-2);width:18px;height:18px}
+    .dot.active{outline:3px solid rgba(124,92,255,.35)}
+
+    .legend{
+      display:flex;gap:14px;align-items:center;
+      color:var(--muted);font-size:11px;margin-top:10px
+    }
+
+    .legend i{
+      width:8px;height:8px;border-radius:50%;display:inline-block;margin-right:5px
+    }
+
+    .prompt-box,
+    .answer-box{
+      border:1px solid var(--line);
+      background:#091625;
+      border-radius:14px;
+      padding:14px;
+      color:#c5d2e5;
+      white-space:pre-wrap;
+      line-height:1.6;
+      font-size:13px;
+      min-height:160px;
+    }
+
+    .answer-box{
+      min-height:190px;
+    }
+
+    .answer-box strong{color:#fff}
+
+    .metric-grid{
+      display:grid;
+      grid-template-columns:repeat(4,1fr);
+      gap:10px;
+    }
+
+    .metric{
+      border:1px solid var(--line);
+      background:#091625;
+      border-radius:14px;
+      padding:14px;
+    }
+
+    .metric-value{
+      font-size:26px;
+      font-weight:800;
+      letter-spacing:-1px;
+    }
+
+    .metric-name{
+      color:var(--muted);
+      font-size:12px;
+      margin-top:5px;
+    }
+
+    .status{
+      display:flex;
+      align-items:center;
+      gap:8px;
+      font-size:12px;
+      color:var(--muted);
+      margin-top:10px;
+    }
+
+    .status-dot{
+      width:8px;height:8px;border-radius:50%;background:var(--muted)
+    }
+
+    .status.ready .status-dot{background:var(--success)}
+    .status.warn .status-dot{background:var(--warn)}
+
+    .flow-explain{
+      display:grid;
+      grid-template-columns:repeat(3,1fr);
+      gap:12px;
+    }
+
+    .explain{
+      padding:14px;
+      background:#091625;
+      border:1px solid var(--line);
+      border-radius:14px;
+    }
+
+    .explain b{font-size:13px}
+    .explain p{color:var(--muted);font-size:12px;line-height:1.5;margin:7px 0 0}
+
+    .footer{
+      color:var(--muted);
+      font-size:12px;
+      padding:26px 4px 4px;
+      text-align:center;
+    }
+
+    .highlight{
+      color:#c8bcff;
+    }
+
+    .separator{
+      height:1px;background:var(--line);margin:16px 0;
+    }
+
+    @media(max-width:1100px){
+      .app{grid-template-columns:1fr}
+      .sidebar{
+        position:relative;
+        height:auto;
+        border-right:0;
+        border-bottom:1px solid var(--line);
+      }
+      .step-list{
+        display:grid;
+        grid-template-columns:repeat(3,1fr);
+      }
+      .pipeline{grid-template-columns:repeat(2,1fr)}
+      .card,.card.third{grid-column:1/-1}
+    }
+
+    @media(max-width:700px){
+      main{padding:16px 14px 44px}
+      .sidebar{padding:16px}
+      .step-list{grid-template-columns:repeat(2,1fr)}
+      .pipeline,
+      .metric-grid,
+      .flow-explain,
+      .control-row{grid-template-columns:1fr}
+      .hero{padding:20px}
+      .hero-actions{flex-direction:column}
+      .btn{width:100%}
+    }
+  </style>
+</head>
+<body>
+<div class="app">
+  <aside class="sidebar">
+    <div class="brand">
+      <div class="logo">R</div>
+      <div>
+        <h1>RAG Simulator</h1>
+        <p>Interactive learning lab</p>
+      </div>
+    </div>
+
+    <div class="step-list">
+      <button class="step-link active" data-target="ingest"><span class="step-num">1</span> Ingest</button>
+      <button class="step-link" data-target="chunk"><span class="step-num">2</span> Chunk</button>
+      <button class="step-link" data-target="embed"><span class="step-num">3</span> Embed</button>
+      <button class="step-link" data-target="store"><span class="step-num">4</span> Vector Store</button>
+      <button class="step-link" data-target="query"><span class="step-num">5</span> Query</button>
+      <button class="step-link" data-target="retrieve"><span class="step-num">6</span> Retrieve</button>
+      <button class="step-link" data-target="rerank"><span class="step-num">7</span> Rerank</button>
+      <button class="step-link" data-target="prompt"><span class="step-num">8</span> Prompt</button>
+      <button class="step-link" data-target="generate"><span class="step-num">9</span> Generate</button>
+      <button class="step-link" data-target="evaluate"><span class="step-num">10</span> Evaluate</button>
+    </div>
+
+    <div class="sidebar-note">
+      <b>What this simulates</b><br>
+      This is an educational RAG pipeline. Embeddings and similarity scores are approximated in-browser so you can see the concepts without an API key.
+    </div>
+  </aside>
+
+  <main>
+    <section class="hero">
+      <div class="eyebrow">● Retrieval-Augmented Generation</div>
+      <h2>See what happens inside a RAG system, step by step.</h2>
+      <p>
+        Add source material, split it into chunks, create simulated embeddings, index the chunks,
+        ask a question, retrieve the most relevant context, rerank it, build an augmented prompt,
+        and generate a grounded answer with citations.
+      </p>
+      <div class="hero-actions">
+        <button class="btn primary" id="runAll">Run complete RAG pipeline</button>
+        <button class="btn" id="loadExample">Load example knowledge base</button>
+        <button class="btn ghost" id="resetApp">Reset</button>
+      </div>
+    </section>
+
+    <section class="pipeline">
+      <div class="pipe"><strong>Knowledge</strong><span>Raw documents become searchable source material.</span></div>
+      <div class="pipe"><strong>Indexing</strong><span>Chunks are embedded and written to a vector store.</span></div>
+      <div class="pipe"><strong>Retrieval</strong><span>The query is matched to semantically similar chunks.</span></div>
+      <div class="pipe"><strong>Augmentation</strong><span>Best context is inserted into the LLM prompt.</span></div>
+      <div class="pipe"><strong>Generation</strong><span>The model answers using grounded evidence.</span></div>
+    </section>
+
+    <section class="grid">
+      <article class="card" id="ingest">
+        <div class="card-header">
+          <div>
+            <h3>1. Document ingestion</h3>
+            <div class="sub">Paste documents, notes, policies, manuals, web text, transcripts, or database extracts.</div>
+          </div>
+          <span class="badge">Knowledge source</span>
+        </div>
+
+        <label for="sourceText">Source text</label>
+        <textarea id="sourceText" placeholder="Paste source material here..."></textarea>
+
+        <div class="chips">
+          <span class="chip">PDF text</span>
+          <span class="chip">Web pages</span>
+          <span class="chip">Docs</span>
+          <span class="chip">Tickets</span>
+          <span class="chip">Wiki</span>
+          <span class="chip">Database rows</span>
+        </div>
+
+        <div class="status" id="ingestStatus">
+          <span class="status-dot"></span>
+          <span>No document loaded</span>
+        </div>
+      </article>
+
+      <article class="card" id="chunk">
+        <div class="card-header">
+          <div>
+            <h3>2. Chunking</h3>
+            <div class="sub">Break large documents into smaller passages so retrieval can operate at a useful level of detail.</div>
+          </div>
+          <span class="badge">Preprocessing</span>
+        </div>
+
+        <div class="control-row">
+          <div>
+            <label>Chunk size</label>
+            <input id="chunkSize" type="number" min="120" max="1200" value="330">
+          </div>
+          <div>
+            <label>Overlap</label>
+            <input id="overlap" type="number" min="0" max="250" value="60">
+          </div>
+          <div>
+            <label>Strategy</label>
+            <select id="chunkStrategy">
+              <option value="semantic">Paragraph aware</option>
+              <option value="fixed">Fixed length</option>
+            </select>
+          </div>
+        </div>
+
+        <div style="margin-top:12px">
+          <button class="btn primary" id="chunkBtn">Create chunks</button>
+        </div>
+
+        <div class="separator"></div>
+        <div class="chunk-list" id="chunkList">
+          <div class="small-note">Chunks will appear here.</div>
+        </div>
+      </article>
+
+      <article class="card" id="embed">
+        <div class="card-header">
+          <div>
+            <h3>3. Embeddings</h3>
+            <div class="sub">Convert text into numerical vectors that approximate semantic meaning.</div>
+          </div>
+          <span class="badge">Vectorization</span>
+        </div>
+
+        <div class="small-note">
+          A real RAG system may use models such as text-embedding models, BGE, E5, or another encoder.
+          This simulator builds deterministic pseudo-vectors locally.
+        </div>
+
+        <div class="embedding" id="embeddingPreview"></div>
+        <div style="margin-top:12px">
+          <button class="btn primary" id="embedBtn">Generate embeddings</button>
+        </div>
+
+        <div class="status" id="embedStatus">
+          <span class="status-dot"></span>
+          <span>Waiting for chunks</span>
+        </div>
+      </article>
+
+      <article class="card" id="store">
+        <div class="card-header">
+          <div>
+            <h3>4. Vector store</h3>
+            <div class="sub">Store each vector alongside its chunk text and metadata for similarity search.</div>
+          </div>
+          <span class="badge">Index</span>
+        </div>
+
+        <div class="vector-map" id="vectorMap"></div>
+        <div class="legend">
+          <span><i style="background:var(--accent-3)"></i>Chunks</span>
+          <span><i style="background:var(--accent-2)"></i>Query</span>
+        </div>
+        <div class="small-note">Examples: Pinecone, Weaviate, Qdrant, Milvus, pgvector, Elasticsearch/OpenSearch.</div>
+      </article>
+
+      <article class="card full" id="query">
+        <div class="card-header">
+          <div>
+            <h3>5. Ask a question</h3>
+            <div class="sub">The user query is also embedded so it can be compared with the stored chunk vectors.</div>
+          </div>
+          <span class="badge">Query embedding</span>
+        </div>
+
+        <label for="question">User question</label>
+        <input id="question" value="Why can a RAG answer be more trustworthy than using an LLM alone?">
+
+        <div class="control-row">
+          <div>
+            <label>Top K</label>
+            <input id="topK" type="number" min="1" max="8" value="4">
+          </div>
+          <div>
+            <label>Similarity threshold</label>
+            <input id="threshold" type="number" min="0" max="1" step=".05" value=".10">
+          </div>
+          <div>
+            <label>Retrieval type</label>
+            <select id="retrievalType">
+              <option>Hybrid simulation</option>
+              <option>Vector similarity</option>
+              <option>Keyword / BM25 style</option>
+            </select>
+          </div>
+        </div>
+
+        <div style="margin-top:12px">
+          <button class="btn primary" id="retrieveBtn">Retrieve relevant context</button>
+        </div>
+      </article>
+
+      <article class="card" id="retrieve">
+        <div class="card-header">
+          <div>
+            <h3>6. Retrieval</h3>
+            <div class="sub">Select chunks most likely to contain evidence relevant to the question.</div>
+          </div>
+          <span class="badge">Top-K search</span>
+        </div>
+        <div class="retrieval-list" id="retrievalList">
+          <div class="small-note">Run retrieval to view the ranked candidate chunks.</div>
+        </div>
+      </article>
+
+      <article class="card" id="rerank">
+        <div class="card-header">
+          <div>
+            <h3>7. Reranking</h3>
+            <div class="sub">A second scoring pass improves precision by considering the query and candidate chunk together.</div>
+          </div>
+          <span class="badge">Precision layer</span>
+        </div>
+
+        <label>Reranking strength</label>
+        <input id="rerankStrength" type="range" min="0" max="100" value="65">
+
+        <div class="small-note">
+          Real systems may use a cross-encoder, LLM reranker, reciprocal-rank fusion, metadata boosts, freshness, authority, or business rules.
+        </div>
+
+        <div style="margin-top:12px">
+          <button class="btn" id="rerankBtn">Apply reranker</button>
+        </div>
+
+        <div class="status" id="rerankStatus">
+          <span class="status-dot"></span>
+          <span>Not yet applied</span>
+        </div>
+      </article>
+
+      <article class="card full" id="prompt">
+        <div class="card-header">
+          <div>
+            <h3>8. Prompt augmentation</h3>
+            <div class="sub">Combine system instructions, the user question, and retrieved evidence into one grounded prompt.</div>
+          </div>
+          <span class="badge">Context assembly</span>
+        </div>
+
+        <div class="prompt-box" id="promptBox">Run retrieval to build the augmented prompt.</div>
+      </article>
+
+      <article class="card full" id="generate">
+        <div class="card-header">
+          <div>
+            <h3>9. Grounded answer generation</h3>
+            <div class="sub">The LLM generates a response using retrieved evidence rather than relying only on model memory.</div>
+          </div>
+          <span class="badge">LLM</span>
+        </div>
+
+        <div class="answer-box" id="answerBox">The simulated answer will appear here.</div>
+
+        <div style="margin-top:12px">
+          <button class="btn primary" id="generateBtn">Generate grounded answer</button>
+        </div>
+      </article>
+
+      <article class="card full" id="evaluate">
+        <div class="card-header">
+          <div>
+            <h3>10. RAG evaluation</h3>
+            <div class="sub">Measure not just answer quality, but whether retrieval found the right evidence and the answer stayed grounded.</div>
+          </div>
+          <span class="badge">Observability</span>
+        </div>
+
+        <div class="metric-grid">
+          <div class="metric">
+            <div class="metric-value" id="mRelevance">—</div>
+            <div class="metric-name">Retrieval relevance</div>
+          </div>
+          <div class="metric">
+            <div class="metric-value" id="mGrounded">—</div>
+            <div class="metric-name">Groundedness</div>
+          </div>
+          <div class="metric">
+            <div class="metric-value" id="mCoverage">—</div>
+            <div class="metric-name">Context coverage</div>
+          </div>
+          <div class="metric">
+            <div class="metric-value" id="mConfidence">—</div>
+            <div class="metric-name">Answer confidence</div>
+          </div>
+        </div>
+
+        <div class="separator"></div>
+
+        <div class="flow-explain">
+          <div class="explain">
+            <b>Retrieval failure</b>
+            <p>The correct information exists in the knowledge base but the retriever fails to return it.</p>
+          </div>
+          <div class="explain">
+            <b>Generation failure</b>
+            <p>The right context was retrieved, but the model ignores or misinterprets it.</p>
+          </div>
+          <div class="explain">
+            <b>Knowledge gap</b>
+            <p>The answer is not present in the indexed material, so a grounded system should say it lacks evidence.</p>
+          </div>
+        </div>
+      </article>
+    </section>
+
+    <div class="footer">
+      Educational simulator — all calculations are local and deliberately simplified.
+    </div>
+  </main>
+</div>
+
+<script>
+const $ = (id) => document.getElementById(id);
+
+const state = {
+  chunks: [],
+  embeddings: [],
+  queryVector: null,
+  retrieved: [],
+  reranked: false
+};
+
+const exampleText = `Retrieval-Augmented Generation, commonly called RAG, is an architecture that combines information retrieval with a generative language model.
+
+A normal large language model answers primarily from patterns encoded in its parameters. This can be useful, but its internal knowledge may be outdated, incomplete, or insufficiently specific for a private enterprise knowledge base.
+
+A RAG system first creates a searchable knowledge index. Documents are collected from sources such as PDFs, websites, policies, tickets, databases, product manuals, research papers, and internal documentation.
+
+Because long documents are difficult to retrieve as one unit, the ingestion pipeline usually divides them into chunks. Chunk size and overlap are important. Chunks that are too large may contain several unrelated ideas, while chunks that are too small may lose the context needed to answer a question.
+
+Each chunk is transformed into an embedding, which is a numerical representation of semantic meaning. Chunks with related meaning should have vectors that are close to one another in embedding space.
+
+The text and vectors are saved in a vector-capable index. A production system may use Pinecone, Weaviate, Qdrant, Milvus, pgvector, OpenSearch, Elasticsearch, or another vector store.
+
+When a user asks a question, the query is embedded using a compatible model. Similarity search compares the query vector with stored vectors and returns top matching chunks.
+
+Many RAG systems combine vector retrieval with keyword retrieval. This is called hybrid retrieval. Keyword retrieval is useful for exact names, IDs, acronyms, and terms that semantic similarity may miss.
+
+A reranker can improve the initial retrieval results. Instead of relying only on vector distance, a reranker evaluates the relationship between the full query and each candidate passage and places the strongest evidence at the top.
+
+The system then constructs an augmented prompt. This prompt normally includes instructions, the user's question, retrieved context, citation identifiers, and rules telling the model not to invent facts that are unsupported by the supplied context.
+
+The language model generates an answer using that context. If implemented well, RAG can reduce hallucination and make answers more trustworthy because the response can be grounded in current, domain-specific evidence and can cite the source passages.
+
+RAG does not eliminate hallucination automatically. Poor chunking, weak retrieval, irrelevant context, prompt injection, stale data, inadequate metadata, and an overly creative generation model can still lead to bad answers.
+
+Production RAG systems therefore need evaluation and observability. Common dimensions include retrieval relevance, faithfulness or groundedness, answer relevance, context recall, latency, cost, citation accuracy, and user satisfaction.
+
+A well-designed RAG system should also recognize when the knowledge base does not contain enough evidence. In that case, it is often safer to say that the available sources are insufficient than to fabricate a confident answer.`;
+
+function hash(str) {
+  let h = 2166136261;
+  for (let i = 0; i < str.length; i++) {
+    h ^= str.charCodeAt(i);
+    h += (h<<1)+(h<<4)+(h<<7)+(h<<8)+(h<<24);
+  }
+  return h >>> 0;
+}
+
+function vectorize(text, dims = 16) {
+  const v = new Array(dims).fill(0);
+  const words = (text.toLowerCase().match(/[a-z0-9]+/g) || []);
+  words.forEach((w, i) => {
+    const h = hash(w);
+    v[h % dims] += 1 + ((h >> 5) % 7) / 10;
+    v[(h + i * 3) % dims] += .35;
+  });
+  const norm = Math.sqrt(v.reduce((s,x)=>s+x*x,0)) || 1;
+  return v.map(x => x / norm);
+}
+
+function cosine(a,b) {
+  if(!a || !b) return 0;
+  let dot=0, na=0, nb=0;
+  for(let i=0;i<Math.min(a.length,b.length);i++){
+    dot += a[i]*b[i];
+    na += a[i]*a[i];
+    nb += b[i]*b[i];
+  }
+  return dot / ((Math.sqrt(na)*Math.sqrt(nb)) || 1);
+}
+
+function keywordScore(query, text) {
+  const q = [...new Set((query.toLowerCase().match(/[a-z0-9]+/g)||[]).filter(w=>w.length>3))];
+  if(!q.length) return 0;
+  const t = text.toLowerCase();
+  const hit = q.filter(w => t.includes(w)).length;
+  return hit/q.length;
+}
+
+function chunkText(text, size, overlap, strategy){
+  const clean = text.replace(/\r/g,'').trim();
+  if(!clean) return [];
+
+  if(strategy === 'semantic'){
+    const paras = clean.split(/\n\s*\n/).map(x=>x.trim()).filter(Boolean);
+    const chunks = [];
+    let current = "";
+    for(const p of paras){
+      if((current + "\n\n" + p).length <= size){
+        current += (current ? "\n\n" : "") + p;
+      }else{
+        if(current) chunks.push(current);
+        const tail = current.slice(Math.max(0,current.length-overlap));
+        current = (tail ? tail + " " : "") + p;
+        while(current.length > size*1.35){
+          chunks.push(current.slice(0,size));
+          current = current.slice(Math.max(1,size-overlap));
+        }
+      }
+    }
+    if(current) chunks.push(current);
+    return chunks;
+  }
+
+  const chunks=[];
+  const step = Math.max(1,size-overlap);
+  for(let i=0;i<clean.length;i+=step){
+    chunks.push(clean.slice(i,i+size));
+    if(i+size>=clean.length) break;
+  }
+  return chunks;
+}
+
+function renderChunks(){
+  const box = $("chunkList");
+  if(!state.chunks.length){
+    box.innerHTML = '<div class="small-note">Chunks will appear here.</div>';
+    return;
+  }
+  box.innerHTML = state.chunks.map((c,i)=>`
+    <div class="chunk">
+      <div class="chunk-top">
+        <span class="id">chunk_${String(i+1).padStart(2,'0')}</span>
+        <span class="score">${c.length} chars</span>
+      </div>
+      <p>${escapeHtml(c)}</p>
+    </div>`).join('');
+}
+
+function renderEmbeddingPreview(){
+  const box = $("embeddingPreview");
+  if(!state.embeddings.length){
+    box.innerHTML='';
+    return;
+  }
+  const v = state.embeddings[0];
+  box.innerHTML = v.map((x,i)=>`<div class="dim" title="dimension ${i+1}: ${x.toFixed(3)}">${x.toFixed(2)}</div>`).join('');
+}
+
+function posFromVector(v, i){
+  const x = 8 + ((Math.abs((v[0]||0)*.72 + (v[3]||0)*.24 + i*.071) * 1000) % 84);
+  const y = 9 + ((Math.abs((v[1]||0)*.61 + (v[5]||0)*.33 + i*.113) * 1000) % 80);
+  return [x,y];
+}
+
+function renderVectorMap(){
+  const map = $("vectorMap");
+  map.innerHTML = '';
+  state.embeddings.forEach((v,i)=>{
+    const [x,y] = posFromVector(v,i);
+    const d=document.createElement('div');
+    d.className='dot chunk-dot';
+    d.style.left=x+'%'; d.style.top=y+'%';
+    d.title='chunk_'+String(i+1).padStart(2,'0');
+    map.appendChild(d);
+  });
+  if(state.queryVector){
+    const [x,y] = posFromVector(state.queryVector,99);
+    const q=document.createElement('div');
+    q.className='dot query-dot';
+    q.style.left=x+'%'; q.style.top=y+'%';
+    q.title='Query vector';
+    map.appendChild(q);
+  }
+}
+
+function createChunks(){
+  const text=$("sourceText").value;
+  const size=Number($("chunkSize").value)||330;
+  const overlap=Number($("overlap").value)||0;
+  state.chunks = chunkText(text,size,overlap,$("chunkStrategy").value);
+  state.embeddings=[];
+  state.retrieved=[];
+  renderChunks();
+  renderEmbeddingPreview();
+  renderVectorMap();
+  $("ingestStatus").className = "status " + (text.trim() ? "ready" : "");
+  $("ingestStatus").innerHTML = `<span class="status-dot"></span><span>${text.trim() ? `${text.trim().length.toLocaleString()} characters loaded` : 'No document loaded'}</span>`;
+}
+
+function createEmbeddings(){
+  if(!state.chunks.length) createChunks();
+  state.embeddings = state.chunks.map(c=>vectorize(c));
+  renderEmbeddingPreview();
+  renderVectorMap();
+  $("embedStatus").className='status ready';
+  $("embedStatus").innerHTML=`<span class="status-dot"></span><span>${state.embeddings.length} chunk vectors indexed</span>`;
+}
+
+function retrieve(){
+  if(!state.embeddings.length) createEmbeddings();
+  const q=$("question").value.trim();
+  if(!q) return;
+  state.queryVector=vectorize(q);
+
+  const type=$("retrievalType").value;
+  const threshold=Number($("threshold").value)||0;
+  const topK=Math.max(1,Number($("topK").value)||4);
+
+  state.retrieved = state.chunks.map((text,i)=>{
+    const vector = cosine(state.queryVector,state.embeddings[i]);
+    const keyword = keywordScore(q,text);
+    let score = vector;
+    if(type.startsWith("Hybrid")) score = vector*.68 + keyword*.32;
+    if(type.startsWith("Keyword")) score = keyword;
+    return {index:i,text,vector,keyword,score};
+  }).filter(r=>r.score>=threshold)
+    .sort((a,b)=>b.score-a.score)
+    .slice(0,topK);
+
+  state.reranked=false;
+  renderRetrieval();
+  renderVectorMap();
+  buildPrompt();
+}
+
+function renderRetrieval(){
+  const box=$("retrievalList");
+  if(!state.retrieved.length){
+    box.innerHTML='<div class="small-note">No chunk passed the current retrieval threshold.</div>';
+    return;
+  }
+  box.innerHTML=state.retrieved.map((r,rank)=>`
+    <div class="result">
+      <div class="result-top">
+        <span class="id">#${rank+1} · chunk_${String(r.index+1).padStart(2,'0')}</span>
+        <span class="score">${(r.score*100).toFixed(1)}%</span>
+      </div>
+      <p>${escapeHtml(r.text)}</p>
+    </div>`).join('');
+}
+
+function applyRerank(){
+  if(!state.retrieved.length) retrieve();
+  const q=$("question").value;
+  const strength=Number($("rerankStrength").value)/100;
+  state.retrieved=state.retrieved.map(r=>{
+    const phraseBoost = sentenceOverlap(q,r.text);
+    const authorityBoost = /\b(system|model|retriev|context|evidence|answer|hallucin|ground)\w*/i.test(r.text) ? .08 : 0;
+    const rerankScore = r.score*(1-strength*.35) + phraseBoost*(strength*.5) + authorityBoost*strength;
+    return {...r,score:Math.min(1,rerankScore)};
+  }).sort((a,b)=>b.score-a.score);
+
+  state.reranked=true;
+  renderRetrieval();
+  buildPrompt();
+  $("rerankStatus").className='status ready';
+  $("rerankStatus").innerHTML='<span class="status-dot"></span><span>Candidate context reranked</span>';
+}
+
+function sentenceOverlap(q,t){
+  const qw=(q.toLowerCase().match(/[a-z0-9]+/g)||[]).filter(w=>w.length>4);
+  if(!qw.length) return 0;
+  return qw.filter(w=>t.toLowerCase().includes(w)).length/qw.length;
+}
+
+function buildPrompt(){
+  const q=$("question").value.trim();
+  if(!state.retrieved.length){
+    $("promptBox").textContent='Run retrieval to build the augmented prompt.';
+    return;
+  }
+  const context=state.retrieved.map((r,i)=>`[Source ${i+1} | chunk_${String(r.index+1).padStart(2,'0')}]\n${r.text}`).join("\n\n");
+  $("promptBox").textContent =
+`SYSTEM
+You are a grounded question-answering assistant.
+Answer only from the supplied CONTEXT.
+If the context is insufficient, say so clearly.
+Cite sources using [Source N].
+
+CONTEXT
+${context}
+
+USER QUESTION
+${q}
+
+TASK
+Give a concise answer, explain the reasoning in plain language, and cite the supporting sources.`;
+}
+
+function generateAnswer(){
+  if(!state.retrieved.length) retrieve();
+  if(!state.retrieved.length){
+    $("answerBox").textContent='I do not have enough retrieved evidence to answer this question.';
+    setMetrics(20,95,10,25);
+    return;
+  }
+
+  const q=$("question").value.toLowerCase();
+  const joined=state.retrieved.map(r=>r.text).join(" ");
+  const sources=state.retrieved.map((r,i)=>`[Source ${i+1}]`).slice(0,3).join(" ");
+
+  let answer;
+  if(/trust|trustworthy|halluc|llm alone|ground/.test(q)){
+    answer = `<strong>RAG can make an answer more trustworthy because it gives the language model explicit evidence to use at answer time.</strong>
+
+Instead of relying only on what the LLM learned during training, the system retrieves relevant passages from an external knowledge base and inserts them into the prompt. That allows the response to use current, private, and domain-specific information, while also supporting citations back to the evidence. ${sources}
+
+However, RAG is not automatically reliable. Bad chunking, weak retrieval, stale documents, irrelevant context, or an over-creative model can still produce poor answers. A strong system therefore evaluates retrieval relevance, groundedness, citation quality, and whether the answer should decline when evidence is missing.`;
+  } else {
+    const sentences = joined.match(/[^.!?]+[.!?]+/g) || [joined];
+    const qWords=(q.match(/[a-z0-9]+/g)||[]).filter(w=>w.length>4);
+    const scored=sentences.map(s=>({
+      s:s.trim(),
+      score:qWords.filter(w=>s.toLowerCase().includes(w)).length
+    })).sort((a,b)=>b.score-a.score).slice(0,3);
+
+    answer = `<strong>Grounded response</strong>
+
+${scored.map((x,i)=>x.s + ` [Source ${Math.min(i+1,state.retrieved.length)}]`).join(" ")}
+
+The key RAG principle is that the answer should stay within the evidence retrieved from the knowledge base.`;
+  }
+
+  $("answerBox").innerHTML=answer;
+
+  const avg=state.retrieved.reduce((s,r)=>s+r.score,0)/state.retrieved.length;
+  const relevance=Math.round(Math.min(98,avg*100+16));
+  const grounded=Math.round(Math.min(98,78 + state.retrieved.length*4));
+  const coverage=Math.round(Math.min(96,55 + state.retrieved.length*9));
+  const confidence=Math.round((relevance+grounded+coverage)/3);
+  setMetrics(relevance,grounded,coverage,confidence);
+}
+
+function setMetrics(a,b,c,d){
+  $("mRelevance").textContent=a+"%";
+  $("mGrounded").textContent=b+"%";
+  $("mCoverage").textContent=c+"%";
+  $("mConfidence").textContent=d+"%";
+}
+
+function escapeHtml(s){
+  return s.replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#039;'}[c]));
+}
+
+function runAll(){
+  if(!$("sourceText").value.trim()) $("sourceText").value=exampleText;
+  createChunks();
+  createEmbeddings();
+  retrieve();
+  applyRerank();
+  generateAnswer();
+  document.getElementById("retrieve").scrollIntoView({behavior:"smooth",block:"start"});
+}
+
+function reset(){
+  $("sourceText").value='';
+  state.chunks=[];
+  state.embeddings=[];
+  state.queryVector=null;
+  state.retrieved=[];
+  state.reranked=false;
+  renderChunks();
+  renderEmbeddingPreview();
+  renderVectorMap();
+  $("retrievalList").innerHTML='<div class="small-note">Run retrieval to view the ranked candidate chunks.</div>';
+  $("promptBox").textContent='Run retrieval to build the augmented prompt.';
+  $("answerBox").textContent='The simulated answer will appear here.';
+  $("ingestStatus").className='status';
+  $("ingestStatus").innerHTML='<span class="status-dot"></span><span>No document loaded</span>';
+  $("embedStatus").className='status';
+  $("embedStatus").innerHTML='<span class="status-dot"></span><span>Waiting for chunks</span>';
+  $("rerankStatus").className='status';
+  $("rerankStatus").innerHTML='<span class="status-dot"></span><span>Not yet applied</span>';
+  ["mRelevance","mGrounded","mCoverage","mConfidence"].forEach(id=>$(id).textContent="—");
+}
+
+$("loadExample").addEventListener('click',()=>{
+  $("sourceText").value=exampleText;
+  $("ingestStatus").className='status ready';
+  $("ingestStatus").innerHTML=`<span class="status-dot"></span><span>${exampleText.length.toLocaleString()} characters loaded</span>`;
+});
+
+$("chunkBtn").addEventListener('click',createChunks);
+$("embedBtn").addEventListener('click',createEmbeddings);
+$("retrieveBtn").addEventListener('click',retrieve);
+$("rerankBtn").addEventListener('click',applyRerank);
+$("generateBtn").addEventListener('click',generateAnswer);
+$("runAll").addEventListener('click',runAll);
+$("resetApp").addEventListener('click',reset);
+
+document.querySelectorAll('.step-link').forEach(btn=>{
+  btn.addEventListener('click',()=>{
+    document.querySelectorAll('.step-link').forEach(x=>x.classList.remove('active'));
+    btn.classList.add('active');
+    document.getElementById(btn.dataset.target).scrollIntoView({behavior:'smooth',block:'start'});
+  });
+});
+
+$("sourceText").addEventListener('input',()=>{
+  const has=$("sourceText").value.trim().length>0;
+  $("ingestStatus").className='status ' + (has?'ready':'');
+  $("ingestStatus").innerHTML=`<span class="status-dot"></span><span>${has ? $("sourceText").value.trim().length.toLocaleString()+' characters loaded' : 'No document loaded'}</span>`;
+});
+
+$("sourceText").value=exampleText;
+$("ingestStatus").className='status ready';
+$("ingestStatus").innerHTML=`<span class="status-dot"></span><span>${exampleText.length.toLocaleString()} characters loaded</span>`;
+createChunks();
+createEmbeddings();
+renderVectorMap();
+</script>
+</body>
+</html>
